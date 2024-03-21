@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{7af1d473-65eb-4eff-a07d-f17658aa44e4}</ProjectGuid>
+    <RootNamespace>KazLibコピー用</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CyberJack</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)DirectXTex\include;$(ProjectDir)lib\glTF-SDK-master\GLTFSDK\Inc;$(ProjectDir)lib\GLTFSDK\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib\shader\dxil.dll;$(ProjectDir)lib\fbx_sdk\lib;$(ProjectDir)DirectXTex\lib\$(Configuration);$(ProjectDir)lib\GLTFSDK\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)DirectXTex\include;$(ProjectDir)lib\GLTFSDK\inc;$(ProjectDir)lib\glTF-SDK-master\GLTFSDK\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib\shader\dxil.dll;$(ProjectDir)lib\fbx_sdk\lib;$(ProjectDir)DirectXTex\lib\$(Configuration);$(ProjectDir)lib\GLTFSDK\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)lib\shader;$(ProjectDir)\KazLibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <AdditionalOptions>/experimental:module %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;DirectXTex.lib;%(AdditionalDependencies);$(ProjectDir)lib\shader\dxcompiler.lib;GLTFSDK.lib</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+      <AdditionalOptions>/IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib\shader;$(ProjectDir)\KazLibrary;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)lib\shader;$(ProjectDir)\KazLibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions>/experimental:module %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;DirectXTex.lib;%(AdditionalDependencies);$(ProjectDir)lib\shader\dxcompiler.lib;GLTFSDK.lib</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+      <AdditionalOptions>/IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib\shader;$(ProjectDir)\KazLibrary</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="CPUMemoryData.cpp" />
+    <ClCompile Include="Game\Debug\CPUMemoryProfiler.cpp" />
+    <ClCompile Include="Game\Debug\DebugCamera.cpp" />
+    <ClCompile Include="Game\Debug\MemoryProfiler.cpp" />
+    <ClCompile Include="Game\Debug\ParameterMgr.cpp" />
+    <ClCompile Include="Game\Effect\StopMgr.cpp" />
+    <ClCompile Include="Game\Input\Input.cpp" />
+    <ClCompile Include="Game\Scene\RenderScene.cpp" />
+    <ClCompile Include="Game\Tool\SplineRail.cpp" />
+    <ClCompile Include="Game\Tool\ModelTool.cpp" />
+    <ClCompile Include="KazLibrary\Animation\AnimationData.cpp" />
+    <ClCompile Include="KazLibrary\Animation\AnimationInRaytracing.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\BufferDuplicateBlocking.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\CreateGpuBuffer.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\CreateMeshBuffer.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\DescriptorHeapMgr.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\DrawFuncData.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\GBufferMgr.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\Polygon.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\ShaderRandomTable.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\UavViewHandleMgr.cpp" />
+    <ClCompile Include="KazLibrary\Buffer\VertexBufferMgr.cpp" />
+    <ClCompile Include="KazLibrary\Camera\CameraMgr.cpp" />
+    <ClCompile Include="KazLibrary\Collision\BBDuringEquallyCoordinatePlace.cpp" />
+    <ClCompile Include="KazLibrary\Collision\BoundingBox.cpp" />
+    <ClCompile Include="KazLibrary\Collision\CollisionManager.cpp" />
+    <ClCompile Include="KazLibrary\DirectXCommon\DirectX12.cpp" />
+    <ClCompile Include="KazLibrary\DirectXCommon\DirectX12CmdList.cpp" />
+    <ClCompile Include="KazLibrary\DirectXCommon\DirectX12Device.cpp" />
+    <ClCompile Include="KazLibrary\Easing\easing.cpp" />
+    <ClCompile Include="KazLibrary\Fps\FPSManager.cpp" />
+    <ClCompile Include="KazLibrary\Helper\Compute.cpp" />
+    <ClCompile Include="KazLibrary\Helper\DirtyFlag.cpp" />
+    <ClCompile Include="KazLibrary\Helper\HandleMaker.cpp" />
+    <ClCompile Include="KazLibrary\Helper\ISinglton.cpp" />
+    <ClCompile Include="KazLibrary\Helper\KazBufferHelper.cpp" />
+    <ClCompile Include="KazLibrary\Helper\KazHelper.cpp" />
+    <ClCompile Include="KazLibrary\Helper\KazImGuiHelper.cpp" />
+    <ClCompile Include="KazLibrary\Helper\KazRenderHelper.cpp" />
+    <ClCompile Include="KazLibrary\Helper\OutPutDebugStringAndCheckResult.cpp" />
+    <ClCompile Include="KazLibrary\Helper\RegisterNameWithData.cpp" />
+    <ClCompile Include="KazLibrary\Helper\ResouceBufferHelper.cpp" />
+    <ClCompile Include="KazLibrary\Helper\Select.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\imgui.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\implot.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\implot_demo.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\implot_items.cpp" />
+    <ClCompile Include="KazLibrary\Imgui\MyImgui.cpp" />
+    <ClCompile Include="KazLibrary\Input\ControllerInputManager.cpp" />
+    <ClCompile Include="KazLibrary\Input\KeyBoradInputManager.cpp" />
+    <ClCompile Include="KazLibrary\Loader\FbxModelResourceMgr.cpp" />
+    <ClCompile Include="KazLibrary\Loader\MeshParticleLoader.cpp" />
+    <ClCompile Include="KazLibrary\Loader\ModelLoader.cpp" />
+    <ClCompile Include="KazLibrary\Loader\MovieLoader.cpp" />
+    <ClCompile Include="KazLibrary\Loader\ObjResourceMgr.cpp" />
+    <ClCompile Include="KazLibrary\Loader\TextureResourceMgr.cpp" />
+    <ClCompile Include="KazLibrary\Math\KazMath.cpp" />
+    <ClCompile Include="KazLibrary\Pipeline\GraphicsDepthTest.cpp" />
+    <ClCompile Include="KazLibrary\Pipeline\GraphicsPipeLineMgr.cpp" />
+    <ClCompile Include="KazLibrary\Pipeline\GraphicsRootSignature.cpp" />
+    <ClCompile Include="KazLibrary\Pipeline\PreCreateBasePipeLine.cpp" />
+    <ClCompile Include="KazLibrary\Pipeline\PreCreateBaseRootSignature.cpp" />
+    <ClCompile Include="KazLibrary\Pipeline\Shader.cpp" />
+    <ClCompile Include="KazLibrary\PostEffect\Bloom.cpp" />
+    <ClCompile Include="KazLibrary\PostEffect\GaussianBlur.cpp" />
+    <ClCompile Include="KazLibrary\PostEffect\LensFlare.cpp" />
+    <ClCompile Include="KazLibrary\PostEffect\Outline.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\Blas.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\BlasDataContainer.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\BlasVector.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\HitGroup.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\HitGroupMgr.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\RayPipeline.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\RayRootSignature.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\RayShaderData.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\RayShaderStorage.cpp" />
+    <ClCompile Include="KazLibrary\Raytracing\Tlas.cpp" />
+    <ClCompile Include="KazLibrary\RenderTarget\RenderTargetStatus.cpp" />
+    <ClCompile Include="KazLibrary\Render\BasicDraw.cpp" />
+    <ClCompile Include="KazLibrary\Render\DrawExcuteIndirect.cpp" />
+    <ClCompile Include="KazLibrary\Render\DrawFunc.cpp" />
+    <ClCompile Include="KazLibrary\Render\DrawFuncHelper.cpp" />
+    <ClCompile Include="KazLibrary\Render\DrawingByRasterize.cpp" />
+    <ClCompile Include="KazLibrary\Render\GenerateRender.cpp" />
+    <ClCompile Include="KazLibrary\Render\MeshParticleRender.cpp" />
+    <ClCompile Include="KazLibrary\Scene\LoadScene.cpp" />
+    <ClCompile Include="KazLibrary\Scene\main.cpp" />
+    <ClCompile Include="KazLibrary\Scene\ModelToolScene.cpp" />
+    <ClCompile Include="KazLibrary\Scene\SceneChange.cpp" />
+    <ClCompile Include="KazLibrary\Scene\SceneManager.cpp" />
+    <ClCompile Include="KazLibrary\Singlton\LoadingBar.cpp" />
+    <ClCompile Include="KazLibrary\Sound\IAXAudio2VoiceCallback.cpp" />
+    <ClCompile Include="KazLibrary\Sound\SoundManager.cpp" />
+    <ClCompile Include="KazLibrary\WinApi\Msg.cpp" />
+    <ClCompile Include="KazLibrary\WinApi\WinApi.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Mineral\Game\Effect\ChromaticAberration.h" />
+    <ClInclude Include="CPUMemoryData.h" />
+    <ClInclude Include="Game\Debug\CPUMemoryProfiler.h" />
+    <ClInclude Include="Game\Debug\DebugCamera.h" />
+    <ClInclude Include="Game\Debug\MemoryProfiler.h" />
+    <ClInclude Include="Game\Debug\ParameterMgr.h" />
+    <ClInclude Include="Game\Effect\ShakeMgr.h" />
+    <ClInclude Include="Game\Effect\StopMgr.h" />
+    <ClInclude Include="Game\Input\Input.h" />
+    <ClInclude Include="Game\Scene\RenderScene.h" />
+    <ClInclude Include="Game\Tool\SplineRail.h" />
+    <ClInclude Include="Game\Tool\ModelTool.h" />
+    <ClInclude Include="KazLibrary\Animation\AnimationData.h" />
+    <ClInclude Include="KazLibrary\Animation\AnimationInRaytracing.h" />
+    <ClInclude Include="KazLibrary\Buffer\BufferDuplicateBlocking.h" />
+    <ClInclude Include="KazLibrary\Buffer\CreateGpuBuffer.h" />
+    <ClInclude Include="KazLibrary\Buffer\CreateMeshBuffer.h" />
+    <ClInclude Include="KazLibrary\Buffer\DescriptorHeapMgr.h" />
+    <ClInclude Include="KazLibrary\Buffer\DrawFuncData.h" />
+    <ClInclude Include="KazLibrary\Buffer\GBufferMgr.h" />
+    <ClInclude Include="KazLibrary\Buffer\Polygon.h" />
+    <ClInclude Include="KazLibrary\Buffer\ShaderRandomTable.h" />
+    <ClInclude Include="KazLibrary\Buffer\UavViewHandleMgr.h" />
+    <ClInclude Include="KazLibrary\Buffer\VertexBufferMgr.h" />
+    <ClInclude Include="KazLibrary\Camera\CameraMgr.h" />
+    <ClInclude Include="KazLibrary\Collision\BBDuringEquallyCoordinatePlace.h" />
+    <ClInclude Include="KazLibrary\Collision\BoundingBox.h" />
+    <ClInclude Include="KazLibrary\Collision\CollisionManager.h" />
+    <ClInclude Include="KazLibrary\DirectXCommon\Base.h" />
+    <ClInclude Include="KazLibrary\DirectXCommon\d3dx12.h" />
+    <ClInclude Include="KazLibrary\DirectXCommon\DirectX12.h" />
+    <ClInclude Include="KazLibrary\DirectXCommon\DirectX12CmdList.h" />
+    <ClInclude Include="KazLibrary\DirectXCommon\DirectX12Device.h" />
+    <ClInclude Include="KazLibrary\dxcapi.h" />
+    <ClInclude Include="KazLibrary\Easing\easing.h" />
+    <ClInclude Include="KazLibrary\Fps\FPSManager.h" />
+    <ClInclude Include="KazLibrary\Helper\BufferResourceData.h" />
+    <ClInclude Include="KazLibrary\Helper\Compute.h" />
+    <ClInclude Include="KazLibrary\Helper\ConvertEnumToString.h" />
+    <ClInclude Include="KazLibrary\Helper\DebugColor.h" />
+    <ClInclude Include="KazLibrary\Helper\DirtyFlag.h" />
+    <ClInclude Include="KazLibrary\Helper\HandleMaker.h" />
+    <ClInclude Include="KazLibrary\Helper\ISinglton.h" />
+    <ClInclude Include="KazLibrary\Helper\KazBufferHelper.h" />
+    <ClInclude Include="KazLibrary\Helper\KazHelper.h" />
+    <ClInclude Include="KazLibrary\Helper\KazImGuiHelper.h" />
+    <ClInclude Include="KazLibrary\Helper\KazRenderHelper.h" />
+    <ClInclude Include="KazLibrary\Helper\MemoryProfiler.h" />
+    <ClInclude Include="KazLibrary\Helper\MemoryProfilerData.h" />
+    <ClInclude Include="KazLibrary\Helper\OutPutDebugStringAndCheckResult.h" />
+    <ClInclude Include="KazLibrary\Helper\RegisterNameWithData.h" />
+    <ClInclude Include="KazLibrary\Helper\ResouceBufferHelper.h" />
+    <ClInclude Include="KazLibrary\Helper\ResourceFilePass.h" />
+    <ClInclude Include="KazLibrary\Helper\Select.h" />
+    <ClInclude Include="KazLibrary\Imgui\imconfig.h" />
+    <ClInclude Include="KazLibrary\Imgui\imgui.h" />
+    <ClInclude Include="KazLibrary\Imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="KazLibrary\Imgui\imgui_impl_win32.h" />
+    <ClInclude Include="KazLibrary\Imgui\imgui_internal.h" />
+    <ClInclude Include="KazLibrary\Imgui\implot.h" />
+    <ClInclude Include="KazLibrary\Imgui\implot_internal.h" />
+    <ClInclude Include="KazLibrary\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="KazLibrary\Imgui\imstb_textedit.h" />
+    <ClInclude Include="KazLibrary\Imgui\imstb_truetype.h" />
+    <ClInclude Include="KazLibrary\Imgui\MyImgui.h" />
+    <ClInclude Include="KazLibrary\Imgui\stb_image.h" />
+    <ClInclude Include="KazLibrary\Input\ControllerInputManager.h" />
+    <ClInclude Include="KazLibrary\Input\IInputManager.h" />
+    <ClInclude Include="KazLibrary\Input\KeyBoradInputManager.h" />
+    <ClInclude Include="KazLibrary\Loader\FbxModelResourceMgr.h" />
+    <ClInclude Include="KazLibrary\Loader\MeshParticleLoader.h" />
+    <ClInclude Include="KazLibrary\Loader\ModelLoader.h" />
+    <ClInclude Include="KazLibrary\Loader\MovieLoader.h" />
+    <ClInclude Include="KazLibrary\Loader\ObjResourceMgr.h" />
+    <ClInclude Include="KazLibrary\Loader\TextureResourceMgr.h" />
+    <ClInclude Include="KazLibrary\Math\KazMath.h" />
+    <ClInclude Include="KazLibrary\Pipeline\GraphicsDepthTest.h" />
+    <ClInclude Include="KazLibrary\Pipeline\GraphicsPipeLineMgr.h" />
+    <ClInclude Include="KazLibrary\Pipeline\GraphicsRootSignature.h" />
+    <ClInclude Include="KazLibrary\Pipeline\PreCreateBasePipeLine.h" />
+    <ClInclude Include="KazLibrary\Pipeline\PreCreateBaseRootSignature.h" />
+    <ClInclude Include="KazLibrary\Pipeline\Shader.h" />
+    <ClInclude Include="KazLibrary\PostEffect\Bloom.h" />
+    <ClInclude Include="KazLibrary\PostEffect\GaussianBlur.h" />
+    <ClInclude Include="KazLibrary\PostEffect\LensFlare.h" />
+    <ClInclude Include="KazLibrary\PostEffect\Outline.h" />
+    <ClInclude Include="KazLibrary\Raytracing\Blas.h" />
+    <ClInclude Include="KazLibrary\Raytracing\BlasDataContainer.h" />
+    <ClInclude Include="KazLibrary\Raytracing\BlasVector.h" />
+    <ClInclude Include="KazLibrary\Raytracing\HitGroup.h" />
+    <ClInclude Include="KazLibrary\Raytracing\HitGroupMgr.h" />
+    <ClInclude Include="KazLibrary\Raytracing\RayPipeline.h" />
+    <ClInclude Include="KazLibrary\Raytracing\RayRootSignature.h" />
+    <ClInclude Include="KazLibrary\Raytracing\RayShaderData.h" />
+    <ClInclude Include="KazLibrary\Raytracing\RayShaderStorage.h" />
+    <ClInclude Include="KazLibrary\Raytracing\Tlas.h" />
+    <ClInclude Include="KazLibrary\RenderTarget\RenderTargetStatus.h" />
+    <ClInclude Include="KazLibrary\Render\BasicDraw.h" />
+    <ClInclude Include="KazLibrary\Render\DrawExcuteIndirect.h" />
+    <ClInclude Include="KazLibrary\Render\DrawFunc.h" />
+    <ClInclude Include="KazLibrary\Render\DrawFuncHelper.h" />
+    <ClInclude Include="KazLibrary\Render\DrawingByRasterize.h" />
+    <ClInclude Include="KazLibrary\Render\GenerateRender.h" />
+    <ClInclude Include="KazLibrary\Render\KazExcuteIndirect.h" />
+    <ClInclude Include="KazLibrary\Render\MeshParticleRender.h" />
+    <ClInclude Include="KazLibrary\Render\RenderData.h" />
+    <ClInclude Include="KazLibrary\Scene\LoadScene.h" />
+    <ClInclude Include="KazLibrary\Scene\ModelToolScene.h" />
+    <ClInclude Include="KazLibrary\Scene\SceneBase.h" />
+    <ClInclude Include="KazLibrary\Scene\SceneChange.h" />
+    <ClInclude Include="KazLibrary\Scene\SceneData.h" />
+    <ClInclude Include="KazLibrary\Scene\SceneManager.h" />
+    <ClInclude Include="KazLibrary\Singlton\LoadingBar.h" />
+    <ClInclude Include="KazLibrary\Sound\IAXAudio2VoiceCallback.h" />
+    <ClInclude Include="KazLibrary\Sound\SoundManager.h" />
+    <ClInclude Include="KazLibrary\WinApi\Msg.h" />
+    <ClInclude Include="KazLibrary\WinApi\WinApi.h" />
+    <ClInclude Include="lib\tinygltf\stb_image.h" />
+    <ClInclude Include="lib\tinygltf\stb_image_write.h" />
+    <ClInclude Include="lib\tinygltf\tiny_gltf.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resource\ShaderFiles\Raytracing\RaytracingNoiseHeader.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+    <ResourceCompile Include="KazLib.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\WinPixEventRuntime.1.0.220124001\build\WinPixEventRuntime.targets" Condition="Exists('packages\WinPixEventRuntime.1.0.220124001\build\WinPixEventRuntime.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\WinPixEventRuntime.1.0.220124001\build\WinPixEventRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\WinPixEventRuntime.1.0.220124001\build\WinPixEventRuntime.targets'))" />
+  </Target>
+</Project>
