@@ -25,17 +25,6 @@ int YourAllocHook(int allocType, void *userData, size_t size,
 	const unsigned char *filename, int lineNumber
 )
 {
-	switch (allocType)
-	{
-	case _HOOK_ALLOC:
-		break;
-	case _HOOK_FREE:
-		break;
-	case _HOOK_REALLOC:
-		break;
-	default:
-		break;
-	}
 	if (!CPUMemoryProfiler::Instance()->m_caputureFlag)
 	{
 		CPUMemoryProfiler::Instance()->Generate(
