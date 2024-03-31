@@ -114,11 +114,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CPUMemoryData.cpp" />
+    <ClCompile Include="Game\Debug\AllockHook.cpp" />
+    <ClCompile Include="Game\Debug\CPUMemoryData.cpp" />
     <ClCompile Include="Game\Debug\CPUMemoryProfiler.cpp" />
     <ClCompile Include="Game\Debug\DebugCamera.cpp" />
     <ClCompile Include="Game\Debug\MemoryProfiler.cpp" />
     <ClCompile Include="Game\Debug\ParameterMgr.cpp" />
+    <ClCompile Include="Game\Debug\STLAllocator.cpp" />
     <ClCompile Include="Game\Effect\StopMgr.cpp" />
     <ClCompile Include="Game\Input\Input.cpp" />
     <ClCompile Include="Game\Scene\RenderScene.cpp" />
@@ -126,6 +128,7 @@
     <ClCompile Include="Game\Tool\ModelTool.cpp" />
     <ClCompile Include="KazLibrary\Animation\AnimationData.cpp" />
     <ClCompile Include="KazLibrary\Animation\AnimationInRaytracing.cpp" />
+    <ClCompile Include="KazLibrary\Application.cpp" />
     <ClCompile Include="KazLibrary\Buffer\BufferDuplicateBlocking.cpp" />
     <ClCompile Include="KazLibrary\Buffer\CreateGpuBuffer.cpp" />
     <ClCompile Include="KazLibrary\Buffer\CreateMeshBuffer.cpp" />
@@ -218,11 +221,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Mineral\Game\Effect\ChromaticAberration.h" />
-    <ClInclude Include="CPUMemoryData.h" />
+    <ClInclude Include="Game\Debug\AllockHook.h" />
+    <ClInclude Include="Game\Debug\CPUMemoryData.h" />
     <ClInclude Include="Game\Debug\CPUMemoryProfiler.h" />
     <ClInclude Include="Game\Debug\DebugCamera.h" />
     <ClInclude Include="Game\Debug\MemoryProfiler.h" />
     <ClInclude Include="Game\Debug\ParameterMgr.h" />
+    <ClInclude Include="Game\Debug\STLAllocator.h" />
     <ClInclude Include="Game\Effect\ShakeMgr.h" />
     <ClInclude Include="Game\Effect\StopMgr.h" />
     <ClInclude Include="Game\Input\Input.h" />
@@ -231,6 +236,7 @@
     <ClInclude Include="Game\Tool\ModelTool.h" />
     <ClInclude Include="KazLibrary\Animation\AnimationData.h" />
     <ClInclude Include="KazLibrary\Animation\AnimationInRaytracing.h" />
+    <ClInclude Include="KazLibrary\Application.h" />
     <ClInclude Include="KazLibrary\Buffer\BufferDuplicateBlocking.h" />
     <ClInclude Include="KazLibrary\Buffer\CreateGpuBuffer.h" />
     <ClInclude Include="KazLibrary\Buffer\CreateMeshBuffer.h" />

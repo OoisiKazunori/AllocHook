@@ -64,7 +64,7 @@ RESOURCE_HANDLE VertexBufferMgr::GenerateBuffer(const VertexGenerateData &arg_ve
 	return outputHandle;
 }
 
-RESOURCE_HANDLE VertexBufferMgr::GenerateBuffer(const std::vector<VertexAndIndexGenerateData> &arg_vertexData, bool arg_generateInVRAMFlag, std::string arg_bufferName)
+RESOURCE_HANDLE VertexBufferMgr::GenerateBuffer(const std::vector<VertexAndIndexGenerateData, STLAllocator<VertexAndIndexGenerateData>> &arg_vertexData, bool arg_generateInVRAMFlag, std::string arg_bufferName)
 {
 	//配列の中から設定する要素を決める--------------------------------
 	RESOURCE_HANDLE outputHandle = m_handle.GetHandle();
@@ -75,8 +75,7 @@ RESOURCE_HANDLE VertexBufferMgr::GenerateBuffer(const std::vector<VertexAndIndex
 		m_polygonIndexBufferArray.emplace_back();
 		pushBackFlag = true;
 	}
-
-	std::vector<std::vector<IAPolygonBufferData>> *polygonBuffer = &m_polygonIndexBufferArray[outputHandle];
+	std::vector<std::vector<IAPolygonBufferData, STLAllocator<IAPolygonBufferData>>> *polygonBuffer = &m_polygonIndexBufferArray[outputHandle];
 	PolygonMultiMeshedIndexData *polygonMeshData = &m_drawIndexDataArray[outputHandle];
 	//配列の中から設定する要素を決める--------------------------------
 
@@ -140,21 +139,21 @@ RESOURCE_HANDLE VertexBufferMgr::GeneratePlaneBuffer()
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT2 uv;
 	};
-	std::vector<DirectX::XMFLOAT3> lVertices = GetPlaneVertices(
+	std::vector<DirectX::XMFLOAT3, STLAllocator<DirectX::XMFLOAT3>> lVertices = GetPlaneVertices(
 		KazMath::Vec2<float>(0.5f, 0.5f),
 		KazMath::Vec2<float>(1.0f, 1.0f),
 		KazMath::Vec2<int>(1, 1)
 	);
-	std::vector<DirectX::XMFLOAT2> lUv(4);
+	std::vector<DirectX::XMFLOAT2, STLAllocator<DirectX::XMFLOAT2>> lUv(4);
 	KazRenderHelper::InitUvPos(&lUv[0], &lUv[1], &lUv[2], &lUv[3]);
-	std::vector<VertUvData> lVertUv;
+	std::vector<VertUvData, STLAllocator<VertUvData>> lVertUv;
 	for (int i = 0; i < lVertices.size(); ++i)
 	{
 		lVertUv.emplace_back();
 		lVertUv[i].pos = { lVertices[i].x,lVertices[i].y,lVertices[i].z };
 		lVertUv[i].uv = lUv[i];
 	}
-	std::vector<UINT> lIndices;
+	std::vector<UINT, STLAllocator<UINT>> lIndices;
 	for (int i = 0; i < 6; ++i)
 	{
 		lIndices.emplace_back(KazRenderHelper::InitIndciesForPlanePolygon()[i]);
@@ -349,9 +348,9 @@ PolygonInstanceData VertexBufferMgr::GetVertexBuffer(RESOURCE_HANDLE HANDLE)
 	return m_drawDataArray[HANDLE];
 }
 
-std::vector<DirectX::XMFLOAT3> VertexBufferMgr::GetPlaneVertices(const KazMath::Vec2<float> &anchorPoint, const KazMath::Vec2<float> &scale, const KazMath::Vec2<int> &texSize)
+std::vector<DirectX::XMFLOAT3, STLAllocator<DirectX::XMFLOAT3>> VertexBufferMgr::GetPlaneVertices(const KazMath::Vec2<float> &anchorPoint, const KazMath::Vec2<float> &scale, const KazMath::Vec2<int> &texSize)
 {
-	std::vector<DirectX::XMFLOAT3> vertices(4);
+	std::vector<DirectX::XMFLOAT3, STLAllocator<DirectX::XMFLOAT3>> vertices(4);
 	KazRenderHelper::InitVerticesPos(&vertices[0], &vertices[1], &vertices[2], &vertices[3], anchorPoint.ConvertXMFLOAT2());
 
 	KazMath::Vec2<float>leftUpPos(vertices[0].x, vertices[0].y);

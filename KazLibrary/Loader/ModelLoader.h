@@ -47,8 +47,8 @@
 
 #include <experimental/filesystem>
 #include<map>
-
 #include"Animation/AnimationData.h"
+#include"../Game/Debug/STLAllocator.h"
 
 struct CoordinateSpaceMatData
 {
@@ -71,6 +71,14 @@ struct VertexBufferData
 	DirectX::XMFLOAT2 uv;
 	DirectX::XMFLOAT3 tangent;
 	DirectX::XMFLOAT3 binormal;
+	void operator=(const VertexBufferData &rhs)
+	{
+		pos = rhs.pos;
+		normal = rhs.normal;
+		uv = rhs.uv;
+		tangent = rhs.tangent;
+		binormal = rhs.binormal;
+	}
 };
 
 struct VertexBufferAnimationData
@@ -87,7 +95,7 @@ struct VertexBufferAnimationData
 struct AnimationData
 {
 	//骨
-	std::vector<DirectX::XMMATRIX> boneArray;
+	std::vector<DirectX::XMMATRIX, STLAllocator<DirectX::XMMATRIX>> boneArray;
 	//アニメーション時間
 };
 
@@ -104,17 +112,17 @@ enum MaterialEnum
 class GLTFLoader
 {
 public:
-	std::vector<ModelMeshData> Load(std::string fileName, std::string fileDir, Skeleton* skelton);
+	std::vector<ModelMeshData, STLAllocator<ModelMeshData>> Load(std::string fileName, std::string fileDir, Skeleton *skelton);
 
 
 private:
 	// Uses the Document class to print some basic information about various top-level glTF entities
-	void PrintDocumentInfo(const Microsoft::glTF::Document& document);
+	void PrintDocumentInfo(const Microsoft::glTF::Document &document);
 
 	// Uses the Document and GLTFResourceReader classes to print information about various glTF binary resources
-	void PrintResourceInfo(const Microsoft::glTF::Document& document, const Microsoft::glTF::GLTFResourceReader& resourceReader);
+	void PrintResourceInfo(const Microsoft::glTF::Document &document, const Microsoft::glTF::GLTFResourceReader &resourceReader);
 
-	void PrintInfo(const std::experimental::filesystem::path& path);
+	void PrintInfo(const std::experimental::filesystem::path &path);
 
 	KazMath::Vec3<int> GetVertIndex(int vertCount, int vecMaxNum)
 	{
@@ -133,7 +141,7 @@ private:
 		return buffer;
 	};
 
-	void LoadMaterialTexture(MaterialData* arg_material, std::string arg_fileDir, std::string arg_id, const Microsoft::glTF::Document& arg_doc, GraphicsRootParamType arg_rootParam);
+	void LoadMaterialTexture(MaterialData *arg_material, std::string arg_fileDir, std::string arg_id, const Microsoft::glTF::Document &arg_doc, GraphicsRootParamType arg_rootParam);
 };
 
 
@@ -155,9 +163,9 @@ public:
 
 	ModelLoader();
 	std::shared_ptr<ModelInfomation> Load(std::string arg_fileDir, std::string arg_fileName);
-	std::vector<VertexBufferData>GetVertexDataArray(const VertexData& data);
-	std::vector<VertexBufferData>GetVertexDataArray(const VertexData& data, const std::vector<UINT>& indexArray);
-	std::vector<VertexBufferAnimationData>GetVertexAnimationDataArray(const VertexData& data, const std::vector<UINT>& indexArray);
+	std::vector<VertexBufferData, STLAllocator<VertexBufferData>>GetVertexDataArray(const VertexData &data);
+	std::vector<VertexBufferData, STLAllocator<VertexBufferData>>GetVertexDataArray(const VertexData &data, const std::vector<UINT, STLAllocator<UINT>> &indexArray);
+	std::vector<VertexBufferAnimationData, STLAllocator<VertexBufferAnimationData>>GetVertexAnimationDataArray(const VertexData &data, const std::vector<UINT, STLAllocator<UINT>> &indexArray);
 
 
 private:
@@ -167,8 +175,8 @@ private:
 
 	struct MeshVertex
 	{
-		std::vector<std::vector<VertexBufferData>>m_vertexDataArray;
-		std::vector<std::vector<VertexBufferAnimationData>>m_vertexAnimationDataArray;
+		std::vector<std::vector<VertexBufferData, STLAllocator<VertexBufferData>>, STLAllocator<std::vector<VertexBufferData, STLAllocator<VertexBufferData>>>>m_vertexDataArray;
+		std::vector<std::vector<VertexBufferAnimationData, STLAllocator<VertexBufferAnimationData>>, STLAllocator<std::vector<VertexBufferAnimationData, STLAllocator<VertexBufferAnimationData>>>>m_vertexAnimationDataArray;
 	};
 	std::vector<MeshVertex>m_modelVertexDataArray;
 	struct ModelCacheData
@@ -187,7 +195,7 @@ class StreamReader : public Microsoft::glTF::IStreamReader
 public:
 	StreamReader(std::experimental::filesystem::path pathBase) : m_pathBase(std::move(pathBase)) { }
 
-	std::shared_ptr<std::istream> GetInputStream(const std::string& filename) const override
+	std::shared_ptr<std::istream> GetInputStream(const std::string &filename) const override
 	{
 		auto streamPath = m_pathBase / std::experimental::filesystem::u8path(filename);
 		auto stream = std::make_shared<std::ifstream>(streamPath, std::ios_base::binary);

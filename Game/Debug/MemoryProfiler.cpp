@@ -12,9 +12,6 @@ MemoryProfiler::MemoryProfiler() :
 	m_bufferNameArray[2] = "UnorderAccesssBuffer";
 	m_bufferNameArray[3] = "RenderTarget";
 	m_bufferNameArray[4] = "Mesh";
-	m_bufferNameArray[5] = "CPU";
-	//m_bufferNameArray[6] = "Rootsignature";
-	//m_bufferNameArray[7] = "Pipeline";
 }
 
 void MemoryProfiler::CalucurateBufferMemory()

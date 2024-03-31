@@ -10,7 +10,6 @@ enum BufferType
 	UnorderAccesssBuffer,
 	RenderTarget,
 	Mesh,
-	CPU,
 	MAX
 };
 

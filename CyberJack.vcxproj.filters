@@ -101,8 +101,11 @@
     <ClCompile Include="KazLibrary\Imgui\implot.cpp" />
     <ClCompile Include="KazLibrary\Imgui\implot_demo.cpp" />
     <ClCompile Include="KazLibrary\Imgui\implot_items.cpp" />
-    <ClCompile Include="CPUMemoryData.cpp" />
+    <ClCompile Include="Game\Debug\CPUMemoryData.cpp" />
     <ClCompile Include="Game\Debug\CPUMemoryProfiler.cpp" />
+    <ClCompile Include="Game\Debug\AllockHook.cpp" />
+    <ClCompile Include="Game\Debug\STLAllocator.cpp" />
+    <ClCompile Include="KazLibrary\Application.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Debug\ParameterMgr.h" />
@@ -225,8 +228,11 @@
     <ClInclude Include="KazLibrary\Helper\BufferResourceData.h" />
     <ClInclude Include="KazLibrary\Helper\MemoryProfiler.h" />
     <ClInclude Include="KazLibrary\Helper\MemoryProfilerData.h" />
-    <ClInclude Include="CPUMemoryData.h" />
+    <ClInclude Include="Game\Debug\CPUMemoryData.h" />
     <ClInclude Include="Game\Debug\CPUMemoryProfiler.h" />
+    <ClInclude Include="Game\Debug\AllockHook.h" />
+    <ClInclude Include="Game\Debug\STLAllocator.h" />
+    <ClInclude Include="KazLibrary\Application.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

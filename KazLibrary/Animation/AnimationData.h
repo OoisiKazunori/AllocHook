@@ -1,6 +1,7 @@
 #pragma once
 #include"../KazLibrary/Math/KazMath.h"
 #include"../KazLibrary/Helper/KazBufferHelper.h"
+#include"../Game/Debug/STLAllocator.h"
 #include<map>
 
 template<typename T>
@@ -15,7 +16,7 @@ struct Animation
 {
 	int startFrame;
 	int endFrame;
-	std::vector<KeyFrame<T>>keyFrames;
+	std::vector<KeyFrame<T>, STLAllocator<KeyFrame<T>>>keyFrames;
 };
 
 class Bone
@@ -64,8 +65,8 @@ public:
 	*/
 	std::map<std::string, ModelAnimation>animations;
 
-	void CreateBoneTree(const DirectX::XMMATRIX& CoordinateSysConvertMat);
-	int GetIndex(const std::string& BoneName);
+	void CreateBoneTree(const DirectX::XMMATRIX &CoordinateSysConvertMat);
+	int GetIndex(const std::string &BoneName);
 };
 
 struct VertexData
@@ -78,7 +79,7 @@ struct VertexData
 	std::vector<KazMath::Vec3<float>> binormalArray;
 	std::vector<KazMath::Vec4<int>> boneIdx;
 	std::vector<KazMath::Vec4<float>> boneWeight;
-	std::vector<UINT>indexArray;
+	std::vector<UINT, STLAllocator<UINT>>indexArray;
 };
 
 //バッファ生成用の構造体
@@ -112,11 +113,11 @@ struct ModelMeshData
 
 struct ModelInfomation
 {
-	std::vector<ModelMeshData> modelData;
+	std::vector<ModelMeshData, STLAllocator<ModelMeshData>> modelData;
 	RESOURCE_HANDLE modelVertDataHandle;
 	std::shared_ptr<Skeleton> skelton;
 
-	ModelInfomation(const std::vector<ModelMeshData>& model, RESOURCE_HANDLE vertHandle, const std::shared_ptr<Skeleton>& skel);
+	ModelInfomation(const std::vector<ModelMeshData, STLAllocator<ModelMeshData>> &model, RESOURCE_HANDLE vertHandle, const std::shared_ptr<Skeleton> &skel);
 };
 
 class ModelAnimator
@@ -133,13 +134,13 @@ public:
 	void Reset();
 
 	//指定したアニメーションの始まりの姿勢をセット
-	void SetStartPosture(const std::string& AnimationName);
+	void SetStartPosture(const std::string &AnimationName);
 
 	//指定したアニメーションの終わりの姿勢をセット
-	void SetEndPosture(const std::string& AnimationName);
+	void SetEndPosture(const std::string &AnimationName);
 
 	//アニメーション再生
-	void Play(const std::string& AnimationName, const bool& Loop, const bool& Blend, float InitPast = 0.0f);
+	void Play(const std::string &AnimationName, const bool &Loop, const bool &Blend, float InitPast = 0.0f);
 	//何かしらのアニメーションが現在再生中か
 	bool IsPlay()const
 	{
@@ -147,22 +148,22 @@ public:
 	}
 
 	//指定のアニメーションが現在再生中か
-	bool IsPlay(const std::string& AnimationName)
+	bool IsPlay(const std::string &AnimationName)
 	{
-		auto result = std::find_if(playAnimations.begin(), playAnimations.end(), [AnimationName](PlayAnimation& Anim)
+		auto result = std::find_if(playAnimations.begin(), playAnimations.end(), [AnimationName](PlayAnimation &Anim)
 			{
 				return AnimationName.compare(Anim.name) == 0;
 			});
 		return result != playAnimations.end();
 	}
 	//アニメーション更新
-	void Update(const float& arg_timeScale);
+	void Update(const float &arg_timeScale);
 
 	//ボーントランスフォームに親設定
-	void SetParentTransform(KazMath::Transform3D& arg_parent);
+	void SetParentTransform(KazMath::Transform3D &arg_parent);
 
-	const KazBufferHelper::BufferData& GetBoneMatBuff() { return boneBuff; }
-	KazMath::Transform3D& GetBoneTransform(const std::string& BoneName);
+	const KazBufferHelper::BufferData &GetBoneMatBuff() { return boneBuff; }
+	KazMath::Transform3D &GetBoneTransform(const std::string &BoneName);
 private:
 
 	//対応するスケルトンの参照
@@ -181,7 +182,7 @@ private:
 		bool loop = false;
 		bool finish = false;
 
-		PlayAnimation(const std::string& Name, const bool& Loop) :name(Name), loop(Loop) {}
+		PlayAnimation(const std::string &Name, const bool &Loop) :name(Name), loop(Loop) {}
 	};
 
 	std::list<PlayAnimation>playAnimations;
@@ -190,8 +191,8 @@ private:
 
 
 	//ボーンTransform一括計算
-	void CalculateTransform(KazMath::Transform3D& BoneTransform, const Skeleton::BoneAnimation& BoneAnim, const float& Frame, bool& FinishFlg);
-	void BoneMatrixRecursive(const int& BoneIdx, const float& Past, bool* Finish, Skeleton::ModelAnimation& Anim);
+	void CalculateTransform(KazMath::Transform3D &BoneTransform, const Skeleton::BoneAnimation &BoneAnim, const float &Frame, bool &FinishFlg);
+	void BoneMatrixRecursive(const int &BoneIdx, const float &Past, bool *Finish, Skeleton::ModelAnimation &Anim);
 
 };
 
@@ -204,7 +205,7 @@ public:
 		m_initBoneBuffer.rangeType = GRAPHICS_RANGE_TYPE_CBV_VIEW;
 	};
 
-	const KazBufferHelper::BufferData& GetBoneInitBuffer(GraphicsRootParamType arg_rootParam)
+	const KazBufferHelper::BufferData &GetBoneInitBuffer(GraphicsRootParamType arg_rootParam)
 	{
 		m_initBoneBuffer.rootParamType = arg_rootParam;
 		return m_initBoneBuffer;

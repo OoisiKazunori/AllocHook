@@ -239,8 +239,8 @@ void SceneManager::Draw()
 	//UI用の描画
 	m_rasterize.UISortAndRender();
 
-	//MemoryProfiler::Instance()->CalucurateBufferMemory();
-	//MemoryProfiler::Instance()->DrawImGui();
+	MemoryProfiler::Instance()->CalucurateBufferMemory();
+	MemoryProfiler::Instance()->DrawImGui();
 }
 
 void SceneManager::AssetLoad()

@@ -26,10 +26,8 @@ std::shared_ptr<ModelInfomation> ModelLoader::Load(std::string arg_fileDir, std:
 		}
 	}
 
-
 	std::shared_ptr<Skeleton> skelton = std::make_shared<Skeleton>();
-	std::vector<ModelMeshData> modelData;
-	modelData = glTFLoad.Load(arg_fileName, arg_fileDir, skelton.get());
+	std::vector<ModelMeshData, STLAllocator<ModelMeshData>> modelData = glTFLoad.Load(arg_fileName, arg_fileDir, skelton.get());
 
 	//生成されているか確認
 	if (modelData.back().vertexData.verticesArray.size() <= 0 || modelData.back().vertexData.indexArray.size() <= 0)
@@ -45,7 +43,7 @@ std::shared_ptr<ModelInfomation> ModelLoader::Load(std::string arg_fileDir, std:
 		m_modelCacheArray.emplace_back(ModelCacheData(arg_fileDir + arg_fileName, 4 <= skelton->bones.size()));
 	}
 
-	std::vector<VertexAndIndexGenerateData> vertArray;
+	std::vector<VertexAndIndexGenerateData, STLAllocator<VertexAndIndexGenerateData>> vertArray;
 	m_modelVertexDataArray.emplace_back();
 	int dex = 0;
 	bool vramFlag = true;
@@ -54,7 +52,7 @@ std::shared_ptr<ModelInfomation> ModelLoader::Load(std::string arg_fileDir, std:
 		//アニメーションなし
 		if (skelton->animations.size() == 0)
 		{
-			std::vector<VertexBufferData>vertexData = GetVertexDataArray(meshData.vertexData, meshData.vertexData.indexArray);
+			std::vector<VertexBufferData, STLAllocator<VertexBufferData>>vertexData = GetVertexDataArray(meshData.vertexData, meshData.vertexData.indexArray);
 			m_modelVertexDataArray.back().m_vertexDataArray.emplace_back(vertexData);
 			//頂点バッファ生成用の情報をスタックする。
 			VertexAndIndexGenerateData vertData(m_modelVertexDataArray.back().m_vertexDataArray[dex].data(), sizeof(VertexBufferData), vertexData.size(), sizeof(vertexData[0]), meshData.vertexData.indexArray);
@@ -64,7 +62,7 @@ std::shared_ptr<ModelInfomation> ModelLoader::Load(std::string arg_fileDir, std:
 		//アニメーションあり
 		else
 		{
-			std::vector<VertexBufferAnimationData>vertexData = GetVertexAnimationDataArray(meshData.vertexData, meshData.vertexData.indexArray);
+			std::vector<VertexBufferAnimationData, STLAllocator<VertexBufferAnimationData>>vertexData = GetVertexAnimationDataArray(meshData.vertexData, meshData.vertexData.indexArray);
 			m_modelVertexDataArray.back().m_vertexAnimationDataArray.emplace_back(vertexData);
 			//頂点バッファ生成用の情報をスタックする。
 			VertexAndIndexGenerateData vertData(m_modelVertexDataArray.back().m_vertexAnimationDataArray[dex].data(), sizeof(VertexBufferAnimationData), vertexData.size(), sizeof(vertexData[0]), meshData.vertexData.indexArray);
@@ -80,9 +78,9 @@ std::shared_ptr<ModelInfomation> ModelLoader::Load(std::string arg_fileDir, std:
 	return m_modelArray.back();
 }
 
-std::vector<VertexBufferData> ModelLoader::GetVertexDataArray(const VertexData &data)
+std::vector<VertexBufferData, STLAllocator<VertexBufferData>> ModelLoader::GetVertexDataArray(const VertexData &data)
 {
-	std::vector<VertexBufferData>result(data.indexArray.size());
+	std::vector<VertexBufferData, STLAllocator<VertexBufferData>>result(data.indexArray.size());
 
 	for (int i = 0; i < result.size(); ++i)
 	{
@@ -95,9 +93,9 @@ std::vector<VertexBufferData> ModelLoader::GetVertexDataArray(const VertexData &
 	return result;
 }
 
-std::vector<VertexBufferData> ModelLoader::GetVertexDataArray(const VertexData &data, const std::vector<UINT> &indexArray)
+std::vector<VertexBufferData, STLAllocator<VertexBufferData>> ModelLoader::GetVertexDataArray(const VertexData &data, const std::vector<UINT, STLAllocator<UINT>> &indexArray)
 {
-	std::vector<VertexBufferData>result(data.verticesArray.size());
+	std::vector<VertexBufferData, STLAllocator<VertexBufferData>>result(data.verticesArray.size());
 
 	bool skipFlag = 0 < data.tangentArray.size();
 
@@ -120,9 +118,9 @@ std::vector<VertexBufferData> ModelLoader::GetVertexDataArray(const VertexData &
 	return result;
 }
 
-std::vector<VertexBufferAnimationData> ModelLoader::GetVertexAnimationDataArray(const VertexData &data, const std::vector<UINT> &indexArray)
+std::vector<VertexBufferAnimationData, STLAllocator<VertexBufferAnimationData>> ModelLoader::GetVertexAnimationDataArray(const VertexData &data, const std::vector<UINT, STLAllocator<UINT>> &indexArray)
 {
-	std::vector<VertexBufferAnimationData>result(data.verticesArray.size());
+	std::vector<VertexBufferAnimationData, STLAllocator<VertexBufferAnimationData>>result(data.verticesArray.size());
 
 	bool skipFlag = 0 < data.tangentArray.size();
 
@@ -147,7 +145,7 @@ std::vector<VertexBufferAnimationData> ModelLoader::GetVertexAnimationDataArray(
 	return result;
 }
 
-std::vector<ModelMeshData> GLTFLoader::Load(std::string fileName, std::string fileDir, Skeleton *skelton)
+std::vector<ModelMeshData, STLAllocator<ModelMeshData>> GLTFLoader::Load(std::string fileName, std::string fileDir, Skeleton *skelton)
 {
 	std::string FileDir(fileDir);
 	std::string filepass(FileDir + fileName);
@@ -168,9 +166,9 @@ std::vector<ModelMeshData> GLTFLoader::Load(std::string fileName, std::string fi
 	std::string manifest;
 
 	auto MakePathExt = [](const std::string &ext)
-	{
-		return "." + ext;
-	};
+		{
+			return "." + ext;
+		};
 
 	std::unique_ptr<Microsoft::glTF::GLTFResourceReader> resourceReader;
 
@@ -217,8 +215,8 @@ std::vector<ModelMeshData> GLTFLoader::Load(std::string fileName, std::string fi
 	//GLTFSDKから引用---------------------------------------
 
 
-	std::vector<Microsoft::glTF::Node>node;
-	std::vector<DirectX::XMMATRIX> worldMat;
+	std::vector<Microsoft::glTF::Node, STLAllocator<Microsoft::glTF::Node>>node;
+	std::vector<DirectX::XMMATRIX, STLAllocator<DirectX::XMMATRIX>> worldMat;
 	//ノードの読み込み
 	for (const auto &gltfNode : doc.nodes.Elements())
 	{
@@ -379,7 +377,7 @@ std::vector<ModelMeshData> GLTFLoader::Load(std::string fileName, std::string fi
 
 	skelton->CreateBoneTree(DirectX::XMMatrixScaling(-1.0f, 1.0f, 1.0f));
 
-	std::vector<MaterialData> modelMaterialDataArray;
+	std::vector<MaterialData, STLAllocator<MaterialData>> modelMaterialDataArray;
 	//マテリアル情報の読み込み
 	for (const auto &material : doc.materials.Elements())
 	{
@@ -412,7 +410,7 @@ std::vector<ModelMeshData> GLTFLoader::Load(std::string fileName, std::string fi
 	}
 
 	//モデル一つ分のメッシュの塊
-	std::vector<ModelMeshData> meshData;
+	std::vector<ModelMeshData, STLAllocator<ModelMeshData>> meshData;
 	//メッシュの読み込み
 	for (const auto &meshes : doc.meshes.Elements())
 	{
@@ -709,9 +707,9 @@ void GLTFLoader::PrintInfo(const std::experimental::filesystem::path &path)
 	std::string manifest;
 
 	auto MakePathExt = [](const std::string &ext)
-	{
-		return "." + ext;
-	};
+		{
+			return "." + ext;
+		};
 
 	std::unique_ptr<Microsoft::glTF::GLTFResourceReader> resourceReader;
 
@@ -805,7 +803,7 @@ void GLTFLoader::LoadMaterialTexture(MaterialData *arg_material, std::string arg
 	}
 }
 
-ModelInfomation::ModelInfomation(const std::vector<ModelMeshData> &model, RESOURCE_HANDLE vertHandle, const std::shared_ptr<Skeleton> &skel) :
+ModelInfomation::ModelInfomation(const std::vector<ModelMeshData, STLAllocator<ModelMeshData>> &model, RESOURCE_HANDLE vertHandle, const std::shared_ptr<Skeleton> &skel) :
 	modelData(model), modelVertDataHandle(vertHandle), skelton(skel)
 {
 }

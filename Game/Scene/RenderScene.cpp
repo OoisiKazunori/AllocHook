@@ -188,17 +188,17 @@ void RenderScene::Input()
 void RenderScene::Update(DrawingByRasterize &arg_rasterize)
 {
 	m_camera.Update();
-
-	ImGui::Begin("DemoInspector");
-	ImGui::RadioButton("GBuffer-Albedo", &m_gBufferType, 0);
-	ImGui::RadioButton("GBuffer-Normal", &m_gBufferType, 1);
-	ImGui::RadioButton("GBuffer-World", &m_gBufferType, 3);
-	ImGui::RadioButton("GBuffer-Final", &m_gBufferType, 4);
-	ImGui::DragFloat("LightRadius", &m_lightData.m_lightRadius);
-	ImGui::Checkbox("DrawLight", &m_drawLightFlag);
-	ImGui::Checkbox("DrawLightPos", &m_drawLightPosFlag);
-	KazImGuiHelper::InputTransform3D("AlphaModel", &m_alphaTransform);
-	ImGui::End();
+	//
+	//ImGui::Begin("DemoInspector");
+	//ImGui::RadioButton("GBuffer-Albedo", &m_gBufferType, 0);
+	//ImGui::RadioButton("GBuffer-Normal", &m_gBufferType, 1);
+	//ImGui::RadioButton("GBuffer-World", &m_gBufferType, 3);
+	//ImGui::RadioButton("GBuffer-Final", &m_gBufferType, 4);
+	//ImGui::DragFloat("LightRadius", &m_lightData.m_lightRadius);
+	//ImGui::Checkbox("DrawLight", &m_drawLightFlag);
+	//ImGui::Checkbox("DrawLightPos", &m_drawLightPosFlag);
+	//KazImGuiHelper::InputTransform3D("AlphaModel", &m_alphaTransform);
+	//ImGui::End();
 
 	if (m_drawLightFlag)
 	{

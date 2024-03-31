@@ -2,6 +2,7 @@
 #include"SceneData.h"
 #include"../KazLibrary/Render/DrawingByRasterize.h"
 #include"Raytracing/BlasVector.h"
+#include"../Game/Debug/AllockHook.h"
 
 class SceneBase
 {

@@ -4,6 +4,7 @@
 #include"Render/DrawingByRasterize.h"
 #include"Loader/ModelLoader.h"
 #include"Buffer/GBufferMgr.h"
+#include"../Game/Debug/AllockHook.h"
 
 namespace BasicDraw
 {

@@ -16,26 +16,26 @@
 #include"../Game/Debug/MemoryProfiler.h"
 #include"../Game/Debug/CPUMemoryProfiler.h"
 #include<time.h>
-#include<crtdbg.h>
-#define _CRTDBG_MAP_ALLOC
-#define malloc(s) _malloc_dbg(s, _NORMAL_BLOCK,` __FILE__, __LINE__)
+#include"../Game/Debug/AllockHook.h"
+#include"../Game/Debug/STLAllocator.h"
 
 int YourAllocHook(int allocType, void *userData, size_t size,
 	int blockType, long requestNumber,
 	const unsigned char *filename, int lineNumber
 )
 {
-	if (!CPUMemoryProfiler::Instance()->m_caputureFlag)
+	if (!CPUMemoryProfiler::Instance()->GetIsCapture())
 	{
 		CPUMemoryProfiler::Instance()->Generate(
 			filename,
-			static_cast<CPUMemoryProfiler::AllocType>(allocType),
+			static_cast<CPUHookMemoryData::AllocType>(allocType),
 			size,
 			userData
 		);
 	}
 	return true;
 }
+
 
 //ターゲットがデバックの時のみコンソール用のmain文を参照する
 #ifdef _DEBUG
@@ -44,151 +44,157 @@ int main()
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #endif
 {
-	CPUMemoryProfiler::Instance();
+	{
+		CPUMemoryProfiler::Instance();
 #ifdef _DEBUG
-	//Hook設定
-	_CrtSetAllocHook(YourAllocHook);
+		//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+		//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_LEAK_CHECK_DF);
+		//Hook設定
+		_CrtSetAllocHook(YourAllocHook);
 #endif // DEBUG
 
-	std::unique_ptr<int>m = std::make_unique<int>();
-	m.reset();
+		void *hoge = malloc(16);
+		free(hoge);
+		int *num = MY_NEW int;
+		MY_DELETE(num);
 
+		std::unique_ptr<int>m = std::make_unique<int>();
+		m.reset();
 #ifdef _DEBUG
-	//DebugLayer
-	Microsoft::WRL::ComPtr<ID3D12Debug1> debug1;
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debug1))))
-	{
-		Microsoft::WRL::ComPtr<ID3D12Debug> spDebugController0;
-		Microsoft::WRL::ComPtr<ID3D12Debug1> spDebugController1;
+		//DebugLayer
+		Microsoft::WRL::ComPtr<ID3D12Debug1> debug1;
+		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debug1))))
+		{
+			Microsoft::WRL::ComPtr<ID3D12Debug> spDebugController0;
+			Microsoft::WRL::ComPtr<ID3D12Debug1> spDebugController1;
 
 
-		D3D12GetDebugInterface(IID_PPV_ARGS(&spDebugController0));
-		spDebugController0->QueryInterface(IID_PPV_ARGS(&spDebugController1));
-		spDebugController1->EnableDebugLayer();
-		spDebugController1->SetEnableGPUBasedValidation(true);
-	}
+			D3D12GetDebugInterface(IID_PPV_ARGS(&spDebugController0));
+			spDebugController0->QueryInterface(IID_PPV_ARGS(&spDebugController1));
+			spDebugController1->EnableDebugLayer();
+			spDebugController1->SetEnableGPUBasedValidation(true);
+		}
 #endif
 
 
-	//CheckDirectXError
-	int CheckWinError = 0;
-	bool CheckMessageFlag = true;
-	HRESULT CheckDirectXError = 0;
+		//CheckDirectXError
+		int CheckWinError = 0;
+		bool CheckMessageFlag = true;
+		HRESULT CheckDirectXError = 0;
 
 
-	WinApi winApi;
-	Msg msg;
-	DirectX12 directX;
-	CheckWinError = winApi.CreateMyWindow(WIN_X, WIN_Y);
-	if (CheckResult("ウィンドウの生成", CheckWinError))
-	{
-		return 0;
-	}
-	CheckDirectXError = directX.Create(WIN_X, WIN_Y, winApi.hwnd);
-	//CheckDirectXError = S_FALSE;
-	if (CheckResult("DirextX12の生成", CheckDirectXError))
-	{
-		return 0;
-	}
+		WinApi winApi;
+		Msg msg;
+		DirectX12 directX;
+		CheckWinError = winApi.CreateMyWindow(WIN_X, WIN_Y);
+		if (CheckResult("ウィンドウの生成", CheckWinError))
+		{
+			return 0;
+		}
+		CheckDirectXError = directX.Create(WIN_X, WIN_Y, winApi.hwnd);
+		//CheckDirectXError = S_FALSE;
+		if (CheckResult("DirextX12の生成", CheckDirectXError))
+		{
+			return 0;
+		}
 
 #ifdef _DEBUG
-	Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue;
-	DirectX12Device::Instance()->dev->QueryInterface(IID_PPV_ARGS(&infoQueue));
+		Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue;
+		DirectX12Device::Instance()->dev->QueryInterface(IID_PPV_ARGS(&infoQueue));
 
-	D3D12_MESSAGE_ID denyIds[] = {
-	  D3D12_MESSAGE_ID_GPU_BASED_VALIDATION_RESOURCE_STATE_IMPRECISE,
-	};
-	D3D12_MESSAGE_SEVERITY severities[] = {
-	  D3D12_MESSAGE_SEVERITY_INFO
-	};
-	D3D12_INFO_QUEUE_FILTER filter{};
-	filter.DenyList.NumIDs = _countof(denyIds);
-	filter.DenyList.pIDList = denyIds;
-	filter.DenyList.NumSeverities = _countof(severities);
-	filter.DenyList.pSeverityList = severities;
-	infoQueue->PushStorageFilter(&filter);
+		D3D12_MESSAGE_ID denyIds[] = {
+		  D3D12_MESSAGE_ID_GPU_BASED_VALIDATION_RESOURCE_STATE_IMPRECISE,
+		};
+		D3D12_MESSAGE_SEVERITY severities[] = {
+		  D3D12_MESSAGE_SEVERITY_INFO
+		};
+		D3D12_INFO_QUEUE_FILTER filter{};
+		filter.DenyList.NumIDs = _countof(denyIds);
+		filter.DenyList.pIDList = denyIds;
+		filter.DenyList.NumSeverities = _countof(severities);
+		filter.DenyList.pSeverityList = severities;
+		infoQueue->PushStorageFilter(&filter);
 #endif 
-	//使いまわす予定の頂点情報生成
-	VertexBufferMgr::Instance()->GenerateBasicVertex();
+		//使いまわす予定の頂点情報生成
+		VertexBufferMgr::Instance()->GenerateBasicVertex();
 
-	MyImgui imgui;
-	imgui.Create(winApi.hwnd);
+		MyImgui imgui;
+		imgui.Create(winApi.hwnd);
 
-	RenderTargetStatus::Instance()->CreateDoubleBuffer(directX.swapchain);
+		RenderTargetStatus::Instance()->CreateDoubleBuffer(directX.swapchain);
 
-	long lCppVersion = __cplusplus;
-	std::cout << "現在使用しているC++:" << lCppVersion << "\n";
+		long lCppVersion = __cplusplus;
+		std::cout << "現在使用しているC++:" << lCppVersion << "\n";
 
-	//PreCreateBaseRootSignature prepareR;
-	//PreCreateBasePipeLine prepareP;
+		KeyBoradInputManager::Instance()->CreateDevice(&winApi.hwnd, &winApi.window.hInstance);
+		UavViewHandleMgr::Instance()->Init();
+		srand(static_cast<UINT>(time(NULL)));
+		SceneManager sm;
 
-	KeyBoradInputManager::Instance()->CreateDevice(&winApi.hwnd, &winApi.window.hInstance);
-	UavViewHandleMgr::Instance()->Init();
+		Raytracing::RayPipeline::SetDirectX12(&directX);
 
-	srand(static_cast<UINT>(time(NULL)));
-	SceneManager sm;
+		//GPUで処理させたい物をCPUで参照させたい時、コンストラクタで処理させてInitで参照するようにする為のフラグ
+		bool lStop1FlameFlag = false;
 
-	Raytracing::RayPipeline::SetDirectX12(&directX);
 
-	//GPUで処理させたい物をCPUで参照させたい時、コンストラクタで処理させてInitで参照するようにする為のフラグ
-	bool lStop1FlameFlag = false;
+		printf("ウィンドウや描画APIの初期化からシーン生成までのメモリの最大値表示");
+		CPUMemoryProfiler::Instance()->CaptureMaxSize();
 
-	OutputDebugStringA("ゲームのメインループを開始します\n");
-	while (CheckMessageFlag)
-	{
-		//if (!OptionUI::Instance()->m_isDisplayUI)
-		//{
-		//	//マウス非表示
-		//	ShowCursor(false);
-		//}
-		//else
-		//{
-		//	//マウスを画面外に出す
-		//	ClipCursor(nullptr);
-		//	ShowCursor(true);
-		//}
+		OutputDebugStringA("ゲームのメインループを開始します\n");
+		CPUMemoryProfiler::Instance()->SetMemoryType(CPUMemoryProfiler::IN_GAME);
 
-		CheckMessageFlag = msg.CheckMessage();
-		imgui.NewFlame();
-		KeyBoradInputManager::Instance()->InputLog();
-		ControllerInputManager::Instance()->InputLog();
+		while (CheckMessageFlag)
+		{
+			CPUMemoryProfiler::Instance()->InitInGameLog();
+
+			CheckMessageFlag = msg.CheckMessage();
+			imgui.NewFlame();
+			KeyBoradInputManager::Instance()->InputLog();
+			ControllerInputManager::Instance()->InputLog();
 #ifdef _DEBUG
-		winApi.FPS();
+			winApi.FPS();
 #endif
 
-		if (lStop1FlameFlag)
-		{
-			sm.Update();
-			sm.Draw();
+			if (lStop1FlameFlag)
+			{
+				sm.Update();
+				sm.Draw();
+			}
+
+			if (sm.endGameFlag)
+			{
+				break;
+			}
+
+			//
+			if (KeyBoradInputManager::Instance()->InputTrigger(DIK_C))
+			{
+				CPUMemoryProfiler::Instance()->SetMemoryType(CPUMemoryProfiler::IN_GAME);
+				CPUMemoryProfiler::Instance()->Caputure();
+			}
+
+
+			imgui.Set();
+			CameraMgr::Instance()->Record();
+			if (lStop1FlameFlag)
+			{
+				RenderTargetStatus::Instance()->SwapResourceBarrier();
+			}
+			directX.ActCommand();
+
+			lStop1FlameFlag = true;
 		}
+		//CPUMemoryProfiler::Instance()->SetMemoryType(CPUMemoryProfiler::GENERATE_SCENE);
 
-		if (sm.endGameFlag)
-		{
-			break;
-		}
-
-		if (KeyBoradInputManager::Instance()->InputTrigger(DIK_ESCAPE))
-		{
-			CPUMemoryProfiler::Instance()->m_caputureFlag = !CPUMemoryProfiler::Instance()->m_caputureFlag;
-		}
-
-
-		CPUMemoryProfiler::Instance()->Caputure();
-
-
-		imgui.Set();
-		CameraMgr::Instance()->Record();
-		if (lStop1FlameFlag)
-		{
-			RenderTargetStatus::Instance()->SwapResourceBarrier();
-		}
-		directX.ActCommand();
-
-		lStop1FlameFlag = true;
+		winApi.UnregisterWindowClass();
+		ClipCursor(nullptr);
 	}
-	winApi.UnregisterWindowClass();
-	ClipCursor(nullptr);
 
+	//シーン生成周りのログを出力します
+
+	printf("ウィンドウや描画APIの初期化からシーン生成までのメモリ表示");
+	CPUMemoryProfiler::Instance()->SetMemoryType(CPUMemoryProfiler::GENERATE_DIRECTX_WIN);
+	CPUMemoryProfiler::Instance()->Caputure();
 	return 0;
 }
 

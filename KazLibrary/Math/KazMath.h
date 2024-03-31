@@ -6,6 +6,7 @@
 #include"fbxsdk.h"
 #pragma warning(pop)
 #include"../Helper/DirtyFlag.h"
+#include"../Game/Debug/AllockHook.h"
 
 namespace KazMath
 {

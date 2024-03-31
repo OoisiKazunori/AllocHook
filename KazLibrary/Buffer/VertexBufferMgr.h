@@ -1,6 +1,7 @@
 #pragma once
 #include"Polygon.h"
 #include"../KazLibrary/Helper/ISinglton.h"
+#include"../Game/Debug/STLAllocator.h"
 
 struct IAPolygonData
 {
@@ -62,9 +63,9 @@ struct VertexAndIndexGenerateData
 	int structureSize;
 	size_t arraySize;
 	int oneArraySize;
-	std::vector<UINT>indices;
+	std::vector<UINT, STLAllocator<UINT>>indices;
 
-	VertexAndIndexGenerateData(void *VERT_PTR, int STRUCTURE_SIZE, size_t ARRAY_SIZE, int ONE_ARRAY_SIZE, std::vector<UINT>INDICES) :
+	VertexAndIndexGenerateData(void *VERT_PTR, int STRUCTURE_SIZE, size_t ARRAY_SIZE, int ONE_ARRAY_SIZE, std::vector<UINT, STLAllocator<UINT>>INDICES) :
 		verticesPos(VERT_PTR), structureSize(STRUCTURE_SIZE), arraySize(ARRAY_SIZE), oneArraySize(ONE_ARRAY_SIZE), indices(INDICES)
 	{};
 };
@@ -91,7 +92,7 @@ public:
 	RESOURCE_HANDLE GenerateBuffer(const VertexGenerateData &arg_vertexData, bool arg_generateInVRAMFlag, std::string arg_bufferName = "VertexBuffer");
 
 
-	RESOURCE_HANDLE GenerateBuffer(const std::vector<VertexAndIndexGenerateData> &vertexData, bool arg_generateInVRAMFlag = true, std::string arg_bufferName = "VertexForModel");
+	RESOURCE_HANDLE GenerateBuffer(const std::vector<VertexAndIndexGenerateData, STLAllocator<VertexAndIndexGenerateData>> &vertexData, bool arg_generateInVRAMFlag = true, std::string arg_bufferName = "VertexForModel");
 	RESOURCE_HANDLE GenerateBuffer2(const VertexGenerateData &arg_vertexData, bool arg_generateInVRAMFlag, std::string arg_bufferName = "VertexBuffer");
 
 
@@ -118,14 +119,14 @@ private:
 	HandleMaker m_vertexHandle;
 	std::vector<std::vector<std::unique_ptr<PolygonBuffer>>>m_vertexBufferArray;
 	//インデックスあり------
-	std::vector<PolygonMultiMeshedIndexData>m_drawIndexDataArray;
-	std::vector<std::vector<std::vector<IAPolygonBufferData>>>m_polygonIndexBufferArray;
+	std::vector<PolygonMultiMeshedIndexData, STLAllocator<PolygonMultiMeshedIndexData>>m_drawIndexDataArray;
+	std::vector<std::vector<std::vector<IAPolygonBufferData, STLAllocator<IAPolygonBufferData>>>>m_polygonIndexBufferArray;
 	//インデックス無し------
-	std::vector<IAPolygonBufferData>m_polygonBufferArray;
-	std::vector<PolygonInstanceData>m_drawDataArray;
+	std::vector<IAPolygonBufferData,STLAllocator<IAPolygonBufferData>>m_polygonBufferArray;
+	std::vector<PolygonInstanceData,STLAllocator<PolygonInstanceData>>m_drawDataArray;
 	int sDescHandle = 0;
 
-	std::vector<DirectX::XMFLOAT3>GetPlaneVertices(const KazMath::Vec2<float> &anchorPoint, const KazMath::Vec2<float> &scale, const KazMath::Vec2<int> &texSize);
+	std::vector<DirectX::XMFLOAT3,STLAllocator<DirectX::XMFLOAT3>>GetPlaneVertices(const KazMath::Vec2<float> &anchorPoint, const KazMath::Vec2<float> &scale, const KazMath::Vec2<int> &texSize);
 
 
 	RESOURCE_HANDLE m_planeHandle;
